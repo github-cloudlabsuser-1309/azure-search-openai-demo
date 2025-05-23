@@ -1,3 +1,26 @@
+"""
+Base module for implementing different RAG (Retrieval Augmented Generation) approaches.
+
+This module provides the core abstractions and types for implementing different
+retrieval and generation strategies in the chat application. It includes:
+
+1. Document handling and data structures
+2. Abstract base classes for different chat approaches 
+3. Integration with Azure Search and OpenAI services
+4. Support for authentication and access control
+5. Structured types for messages, completions, and search results
+
+The main components are:
+- Document: Data class for representing retrieved documents
+- ChatHandler: ABC for implementing different chat approaches
+- Various typed dictionaries for request/response handling
+
+Dependencies:
+- Azure Search Documents SDK
+- OpenAI API
+- Azure authentication libraries
+"""
+
 import os
 from abc import ABC
 from collections.abc import AsyncGenerator, Awaitable
@@ -39,6 +62,21 @@ from core.authentication import AuthenticationHelper
 
 @dataclass
 class Document:
+    """
+    Represents a document retrieved from the search index.
+    
+    Attributes:
+        id: Unique identifier for the document
+        content: The main text content of the document
+        category: Document category or type
+        sourcepage: Source page reference (for PDFs etc)
+        sourcefile: Original filename
+        oids: List of object IDs for access control
+        groups: List of group IDs for access control
+        captions: List of generated captions from query
+        score: Raw search score
+        reranker_score: Score from semantic reranking
+    """
     id: Optional[str] = None
     content: Optional[str] = None
     category: Optional[str] = None
